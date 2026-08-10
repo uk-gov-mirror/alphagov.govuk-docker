@@ -53,7 +53,7 @@ services:
       - postgres-14-postgis
       - nginx-proxy
       - places-manager-redis
-      - places-manager-worker
+      - places-manager-worker-ports
     environment:
       DATABASE_URL: "postgis://postgres:password@postgres-14-postgis/places-manager"
       PLEK_SERVICE_CONTENT_STORE_URI: http://content-store:8080
@@ -69,6 +69,24 @@ services:
     command: bin/rails s --restart
     ports:
       - "12349:12345"
+    extra_hosts:
+      "content-store": host-gateway
+      "locations-api": host-gateway
+      "search-api": host-gateway
+
+  places-manager-worker-ports:
+    <<: *places-manager
+    depends_on:
+      - postgres-14-postgis
+      - nginx-proxy
+      - places-manager-redis
+    environment:
+      DATABASE_URL: "postgis://postgres:password@postgres-14-postgis/places-manager"
+      PLEK_SERVICE_CONTENT_STORE_URI: http://content-store:8080
+      PLEK_SERVICE_LOCATIONS_API_URI: http://locations-api:8081
+      PLEK_SERVICE_SEARCH_API_URI: http://search-api:8082
+      REDIS_URL: redis://places-manager-redis
+    command: bundle exec sidekiq -C ./config/sidekiq.yml
     extra_hosts:
       "content-store": host-gateway
       "locations-api": host-gateway
