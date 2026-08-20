@@ -35,6 +35,7 @@ services:
       DATABASE_URL: "mysql2://root:root@mysql-8/whitehall_development"
       TEST_DATABASE_URL: "mysql2://root:root@mysql-8/whitehall_test"
       REDIS_URL: redis://whitehall-redis
+      WHITEHALL_ASSET_MANAGER_SHARED_API_KEY: "secret-whitehall-asset-manager-shared-api-key"
 
   whitehall-app: &whitehall-app
     <<: *whitehall
@@ -54,6 +55,7 @@ services:
       VIRTUAL_HOST: whitehall-admin.dev.gov.uk, whitehall-frontend.dev.gov.uk
       BINDING: 0.0.0.0
       DISABLE_ASSETS_DEBUG:
+      WHITEHALL_ASSET_MANAGER_SHARED_API_KEY: "secret-whitehall-asset-manager-shared-api-key"
     expose:
       - "3000"
     command: bin/dev

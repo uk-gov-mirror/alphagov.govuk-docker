@@ -28,6 +28,7 @@ services:
       FAKE_S3_HOST: "http://asset-manager.dev.gov.uk"
       TEST_MONGODB_URI: "mongodb://mongo-3.6/asset-manager-test"
       REDIS_URL: redis://asset-manager-redis
+      WHITEHALL_ASSET_MANAGER_SHARED_API_KEY: "secret-whitehall-asset-manager-shared-api-key"
 
   asset-manager-app: &asset-manager-app
     <<: *asset-manager
@@ -42,6 +43,7 @@ services:
       REDIS_URL: redis://asset-manager-redis
       VIRTUAL_HOST: asset-manager.dev.gov.uk
       BINDING: 0.0.0.0
+      WHITEHALL_ASSET_MANAGER_SHARED_API_KEY: "secret-whitehall-asset-manager-shared-api-key"
     expose:
       - "3000"
     command: bin/rails s --restart
