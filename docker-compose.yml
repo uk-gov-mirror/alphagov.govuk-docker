@@ -6,6 +6,7 @@ volumes:
   postgres-13-email-alert-api:
   postgres-14:
   postgres-14-postgis:
+  postgres-16-postgis:
   postgres-16:
   postgres-17:
   mysql-8:
@@ -57,6 +58,16 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - postgres-14-postgis:/var/lib/postgresql/data
+
+  postgres-16-postgis:
+    # Using the kartoza image because it supports ARM64 and AMD64
+    image: kartoza/postgis:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres-16-postgis:/var/lib/postgresql/data
 
   postgres-16:
     image: postgres:16
