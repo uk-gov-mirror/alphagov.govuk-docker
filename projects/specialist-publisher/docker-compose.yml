@@ -21,17 +21,17 @@ services:
     <<: *specialist-publisher
     shm_size: 512mb
     depends_on:
-      - mongo-3.6
+      - mysql-8
       - specialist-publisher-redis
     environment:
-      MONGODB_URI: "mongodb://mongo-3.6/specialist-publisher"
-      TEST_MONGODB_URI: "mongodb://mongo-3.6/specialist-publisher-test"
+      DATABASE_URL: "mysql2://root:root@mysql-8/specialist_publisher_development"
+      TEST_DATABASE_URL: "mysql2://root:root@mysql-8/specialist_publisher_test"
       REDIS_URL: redis://specialist-publisher-redis
 
   specialist-publisher-app: &specialist-publisher-app
     <<: *specialist-publisher
     depends_on:
-      - mongo-3.6
+      - mysql-8
       - specialist-publisher-redis
       - nginx-proxy
       - publishing-api-app
@@ -39,7 +39,7 @@ services:
       - email-alert-api-app
       - specialist-publisher-worker
     environment:
-      MONGODB_URI: "mongodb://mongo-3.6/specialist-publisher"
+      DATABASE_URL: "mysql2://root:root@mysql-8/specialist_publisher_development"
       REDIS_URL: redis://specialist-publisher-redis
       VIRTUAL_HOST: specialist-publisher.dev.gov.uk
       BINDING: 0.0.0.0
@@ -50,12 +50,12 @@ services:
   specialist-publisher-worker:
     <<: *specialist-publisher
     depends_on:
-      - mongo-3.6
+      - mysql-8
       - specialist-publisher-redis
       - publishing-api-app
       - asset-manager-app
     environment:
-      MONGODB_URI: "mongodb://mongo-3.6/specialist-publisher"
+      DATABASE_URL: "mysql2://root:root@mysql-8/specialist_publisher_development"
       REDIS_URL: redis://specialist-publisher-redis
     command: bundle exec sidekiq -C ./config/sidekiq.yml
 
